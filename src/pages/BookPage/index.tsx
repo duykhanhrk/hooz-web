@@ -494,14 +494,6 @@ function ChaptersSection({book_id}: {book_id: number}) {
             <Text style={{marginLeft: 8, color: theme?.colors.foreground}}>Thêm</Text>
           </Button>
         </View>
-        <View horizontal>
-          <Input
-            variant="tertiary"
-            placeholder="Tìm kiếm"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </View>
       </View>
       <View gap={8} style={{height: 640}} scrollable>
         {chapters?.length !== 0 ?
@@ -562,7 +554,7 @@ function BookPage() {
           <ImageSection query={query} />
         </Card>
         <InfoSection query={query} />
-        <Card>
+        <Card shadowEffect>
           <Text variant="medium-title">Danh sách chương</Text>
           <ChaptersSection book_id={parseInt(id || '')} />
         </Card>

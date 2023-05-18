@@ -214,7 +214,7 @@ function BooksPage() {
                         }
                       </View>
                       <View horizontal>
-                        <Tag numberOfLines={1}>{item.other_names}</Tag>
+                        {item.other_names !== '' && <Tag numberOfLines={1}>{item.other_names}</Tag>}
                       </View>
                       <View horizontal>
                         <Tag>{item.author}</Tag>
