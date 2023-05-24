@@ -13,7 +13,7 @@ export const updateAsync = (book: Book) => ApiService.put(`/admin/books/${book.i
 
 export const deleteAsync = (id: number) => ApiService.delete(`/admin/books/${id}`);
 
-export const activeAsync = (id: number, active: boolean) => ApiService.put(`/admin/books/${id}`, {active});
+export const activeAsync = (id: number, active: boolean, notify?: boolean) => ApiService.put(`/admin/books/${id}/active`, {active, notify});
 
 export const freeAsync = (id: number, free: boolean) => ApiService.put(`/admin/books/${id}`, {free});
 

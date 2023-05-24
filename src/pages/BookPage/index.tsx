@@ -256,6 +256,7 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
 
 function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
   const [book, setBook] = useState<Book | undefined>();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const noti = useNotifications();
   const navigate = useNavigate();
@@ -268,7 +269,7 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
   }, [query.data]);
 
   const updateActive = useMutation({
-    mutationFn: () => BookService.activeAsync(book?.id || 0, !book?.active),
+    mutationFn: (notify?: boolean) => BookService.activeAsync(book?.id || 0, !book?.active, notify),
     onSettled: query.refetch
   })
 
@@ -289,8 +290,51 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
     return <ErrorPage error={query.error} />
   }
 
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      border: `0 solid ${theme?.colors.secondaryBackground}`,
+      borderRadius: 8,
+      padding: 16,
+      backgroundColor: theme?.colors.secondaryBackground
+    },
+    overlay: {
+      backgroundColor: `${theme?.colors.background}99`
+    }
+  };
+
   return (
     <>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        style={customStyles}
+      >
+        <View gap={16}>
+          <View gap={8}>
+            <Text variant="title">Bạn có muốn thông báo đến tất cả người dùng hay không?</Text>
+          </View>
+          <View horizontal gap={8}>
+            <Button variant="primary" style={{gap: 8, flex: 1}} onClick={() => {
+              setModalOpen(false)
+              actCUDHelper(updateActive, noti, 'update', true);
+            }}>
+              <Text>Có</Text>
+            </Button>
+            <Button variant="tertiary" style={{gap: 8, flex: 1}} onClick={() => {
+              setModalOpen(false)
+              actCUDHelper(updateActive, noti, 'update', false);
+            }}>
+              <Text>Không</Text>
+            </Button>
+          </View>
+        </View>
+      </Modal>
       <View horizontal flex={1} gap={8}>
         <Button
           variant="secondary"
@@ -307,7 +351,13 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
           shadowEffect
           variant="secondary"
           style={{gap: 8, width: 120}}
-          onClick={() => actCUDHelper(updateActive, noti, 'update')}
+          onClick={() => {
+            if (!book?.active) {
+              setModalOpen(true);
+            } else {
+              actCUDHelper(updateActive, noti, 'update');
+            }
+          }}
         >
           <Icon icon={book?.active ? 'mingcute:eye-fill' : 'mingcute:eye-line'} style={{color: theme?.colors.blue, height: 20, width: 20}}/>
           <Text style={{color: book?.active ? theme?.colors.blue : theme?.colors.foreground}}>Công khai</Text>
