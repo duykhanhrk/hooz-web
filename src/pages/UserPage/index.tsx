@@ -1,6 +1,6 @@
-import {Button, Card, Input, Page, Tag, Text, TextArea, View} from "@components"
+import {Button, Card, Input, Page, Tag, Text, View} from "@components"
 import {Icon} from "@iconify/react";
-import {Plan, PlanService, User, UserService} from "@services";
+import {User, UserService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery, useMutation, UseMutationResult} from "react-query";
@@ -15,12 +15,6 @@ const Avatar = styled.img`
   height: 40px;
   width: 40px;
   border-radius: 8px;
-`;
-
-const HoriLine = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 8px;
 `;
 
 function UserPage() {
@@ -116,7 +110,7 @@ function UserPage() {
           <View gap={16}>
             <View gap={16} horizontal>
               <View gap={8}>
-                <Text variant="title">Tên</Text>
+                <Text variant="title">Họ</Text>
                 <Input
                   disabled={modalMode !== 'create'}
                   variant="tertiary"
@@ -126,7 +120,7 @@ function UserPage() {
                 />
               </View>
               <View gap={8}>
-                <Text variant="title">Họ</Text>
+                <Text variant="title">Tên</Text>
                 <Input
                   disabled={modalMode !== 'create'}
                   variant="tertiary"
